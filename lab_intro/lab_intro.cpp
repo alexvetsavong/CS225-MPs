@@ -61,14 +61,24 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
-  unsigned int distance = 0;
+  unsigned distance = 0;
+  unsigned x_distance = 0;
+  unsigned y_distance = 0;
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
-      if (sqrt(abs(x-centerX) * abs(x-centerX) + abs(y-centerY)*abs(y-centerY)){
-        
-      }
 
+      x_distance = (unsigned)centerX - x;
+      y_distance = (unsigned)centerY - y;
+
+      distance = sqrt((y_distance*y_distance) + (x_distance*x_distance));
+
+      if(distance > 160){
+        pixel.l = 0.2 * pixel.l;
+      }
+      else if(distance <= 160){
+        pixel.l = (1.0-(0.005*distance)) * pixel.l;
+      }
     }
   }
 
@@ -88,21 +98,13 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  * @return The illinify'd image.
 **/
 PNG illinify(PNG image) {
-  /// This function is already written for you so you can see how to
-  /// interact with our PNG class.
   for (unsigned x = 0; x < image.width(); x++) {
     for (unsigned y = 0; y < image.height(); y++) {
       HSLAPixel & pixel = image.getPixel(x, y);
-
-      // `pixel` is a pointer to the memory stored inside of the PNG `image`,
-      // which means you're changing the image directly.  No need to `set`
-      // the pixel since you're directly changing the memory of the image.
-      if(abs(pixel.h-216) < abs(pixel.h-11)){
-        pixel.h = 216;
+      if(pixel.h <= (113.5) || pixel.h >= (293.5)){
+        pixel.h = 11.0;
       }
-      else {
-        pixel.h = 11;
-      }
+      else pixel.h = 216.0;
     }
   }
 
@@ -123,6 +125,16 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
-
+  for(unsigned x = 0; x < firstImage.width(); x++){
+    for(unsigned y = 0; y < firstImage.height(); y++){
+      HSLAPixel & firstPixel = firstImage.getPixel(x,y);
+      if (x < secondImage.width() && y < secondImage.height()){
+        HSLAPixel & secondPixel = secondImage.getPixel(x,y);
+        if (secondPixel.l == 1){
+          firstPixel.l = firstPixel.l + 0.2;
+        }
+      }
+    }
+  }
   return firstImage;
 }
