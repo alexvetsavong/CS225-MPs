@@ -51,7 +51,7 @@ PNG grayscale(PNG image) {
  * is a total of `sqrt((3 * 3) + (4 * 4)) = sqrt(25) = 5` pixels away and
  * its luminance is decreased by 2.5% (0.975x its original value).  At a
  * distance over 160 pixels away, the luminance will always decreased by 80%.
- * 
+ *
  * The modified PNG is then returned.
  *
  * @param image A PNG object which holds the image data to be modified.
@@ -61,11 +61,21 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
+  unsigned int distance = 0;
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+      if (sqrt(abs(x-centerX) * abs(x-centerX) + abs(y-centerY)*abs(y-centerY)){
+        
+      }
+
+    }
+  }
 
   return image;
-  
+
 }
- 
+
 
 /**
  * Returns a image transformed to Illini colors.
@@ -78,10 +88,27 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  * @return The illinify'd image.
 **/
 PNG illinify(PNG image) {
+  /// This function is already written for you so you can see how to
+  /// interact with our PNG class.
+  for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+      HSLAPixel & pixel = image.getPixel(x, y);
+
+      // `pixel` is a pointer to the memory stored inside of the PNG `image`,
+      // which means you're changing the image directly.  No need to `set`
+      // the pixel since you're directly changing the memory of the image.
+      if(abs(pixel.h-216) < abs(pixel.h-11)){
+        pixel.h = 216;
+      }
+      else {
+        pixel.h = 11;
+      }
+    }
+  }
 
   return image;
 }
- 
+
 
 /**
 * Returns an immge that has been watermarked by another image.
