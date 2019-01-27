@@ -1,8 +1,8 @@
 #include "cs225/PNG.h"
 #include "cs225/HSLAPixel.h"
-#include <cmath>
 using namespace cs225;
 
+#include <cmath>
 #include <string>
 
 PNG* setupOutput(unsigned w, unsigned h){
@@ -32,17 +32,20 @@ void rotate(std::string inputFile, std::string outputFile) {
 }
 
 PNG myArt(unsigned int width, unsigned int height) {
-  PNG png = PNG(width,height);
   // TODO: Part 3
-
-  for (unsigned int y = 0; y < height; y++) {
-    for (unsigned int x = 0; x < width; x++) {
-      HSLAPixel& outPixel = png.getPixel(x,y);
-      if(pow((double)x - (double)width/2.0, 2.0) + pow((double)y - (double)height/2.0, 2.0) <= (width/2)) {
-        outPixel.h = pow((double)x,3) + pow((double)y,2) - 36.0;
+  PNG png = PNG(width, height);
+  for(unsigned int y = 0; y < height; y++) {
+    for(unsigned int x = 0; x < width; x++) {
+      HSLAPixel& currInPixel = png.getPixel(x,y);
+      if(y <= height * sin(y)) {
+        currInPixel.h = (360/(double)height)*pow(x + y,3);
+        currInPixel.s = 0.8;
+        currInPixel.l = 0.5;
       }
       else {
-        outPixel.h = (double)width/360.0 * x;
+        currInPixel.h = 360/(2*(double)height) * abs((double)(height/2) - (double)y);
+        currInPixel.s = 1/(double)width * (double)x;
+        currInPixel.l = 1/(double)height * (double)y;
       }
     }
   }
