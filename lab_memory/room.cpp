@@ -24,6 +24,7 @@ Room::Room(const std::string& init_name, int init_capacity)
 Room::Room(const Room& other)
 {
     copy(other);
+    // std::cout << "cctor called\n";
 }
 
 Room& Room::operator=(const Room& other)
@@ -32,18 +33,23 @@ Room& Room::operator=(const Room& other)
         clear();
         copy(other);
     }
+    // std::cout << "aoptr called\n";
     return *this;
 }
 
 Room::~Room()
 {
     clear();
+    // std::cout << "dctor called\n";
 }
 
 void Room::addLetter(const Letter& L)
 {
-    letters[letterCount++] = L;
-    count += L.count;
+      // std::cout <<"Adding the letter " << L.letter <<". ";
+      // std::cout <<"There are " << L.count <<" of them\n";
+      letters[letterCount] = L;
+      count += L.count;
+      letterCount++;
 }
 
 int Room::spaceRemaining()
@@ -61,9 +67,9 @@ void Room::print(std::ostream & stream /* = std::cout */)
 
 void Room::clear()
 {
-    if (letters != NULL)
-
-        delete letters;
+    // if (letters != NULL) 
+    delete[] letters;
+    // std::cout << "dctor called\n";
 }
 
 void Room::copy(const Room& other)
@@ -72,6 +78,7 @@ void Room::copy(const Room& other)
     capacity = other.capacity;
     count = other.count;
     letterCount = other.letterCount;
-    letters = other.letters;
+    letters = new Letter[max_letters];
+    // std::cout << "cctor called\n";
 
 }
