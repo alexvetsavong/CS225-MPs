@@ -159,18 +159,16 @@ void Image::scale(double factor){
   *this = temp;
 }
 
-void Image::scale(unsigned w, unsigned h){  //e.g 800x20
+void Image::scale(unsigned w, unsigned h){  //e.g 10000x200
   double factor = 0.0;
-  double aspectRatio = width()/height();
+  double aspectRatio = (double)width()/(double)height();
 
-  if(w>h){
-    if (w/(w/aspectRatio) == aspectRatio && (w/aspectRatio) <= h){
-      factor = w/width();
-    }
+  factor = (double)w/(double)width();
+  if (factor*(double)height() > h){
+    factor = (double)h/(double)height();
   }
-  else if ((h*aspectRatio)/h == aspectRatio && (h*aspectRatio <= w)){
-    factor = h/height();
-  }
+
+  if ((factor*(double)width())/(factor*(double)height()) != aspectRatio) return;
 
   Image temp;
   temp.resize(factor*width(),factor*height());
