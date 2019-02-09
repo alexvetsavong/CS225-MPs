@@ -20,5 +20,10 @@ int main() {
   alma.scale(2);
   alma.writeToFile("scale2x.png");
 
+  std::cout << "Using Image::scale to create `scale_w_h.png`..." << std::endl;
+  alma.readFromFile("alma.png");
+  alma.scale(10000,200);
+  alma.writeToFile("scale_w_h.png");
+
   return 0;
 }
