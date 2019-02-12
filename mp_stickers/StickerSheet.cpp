@@ -123,10 +123,16 @@ Image StickerSheet::render() const{
 
   for (unsigned i = 0; i < max_images; i++){
     if (i == image_array[i].index && image_array[i].image != NULL){
+      if(image_array[i].x_pos + image_array[i].image->width() >= result->width()){
+        result->resize(image_array[i].x_pos + image_array[i].image->width(), result->height());
+      }
+      if(image_array[i].y_pos + image_array[i].image->height() >= result->height()){
+        result->resize(result->width(), image_array[i].y_pos + image_array[i].image->height());
+      }
       for (unsigned y = 0; y < image_array[i].image->height(); y++){
         for (unsigned x = 0; x < image_array[i].image->width(); x++){
           HSLAPixel & stickerPixel = image_array[i].image->getPixel(x,y);
-          HSLAPixel & outputPixel = result->getPixel(x + image_array[i].x_pos, y+image_array[i].y_pos);
+          HSLAPixel & outputPixel = result->getPixel(x + image_array[i].x_pos, y + image_array[i].y_pos);
           if (stickerPixel.a != 0) outputPixel = stickerPixel;
         }
       }
