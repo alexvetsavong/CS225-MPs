@@ -1,4 +1,4 @@
-/*
+
 #include "../cs225/catch/catch.hpp"
 #include "../Image.h"
 #include "../StickerSheet.h"
@@ -96,6 +96,7 @@ TEST_CASE("StickerSheet::removeSticker() can remove the last sticker", "[weight=
   sheet.addSticker(i, 50, 200);
   sheet.removeSticker(1);
 
+
   REQUIRE( sheet.render() == expected );
 }
 
@@ -170,7 +171,7 @@ TEST_CASE("StickerSheet::getSticker() returns NULL for a removed sticker", "[wei
 
 //
 // translate
-//
+// 
 TEST_CASE("StickerSheet::translate() translates a sticker's location", "[weight=1][part=2]") {
   Image alma;     alma.readFromFile("tests/alma.png");
   Image i;        i.readFromFile("tests/i.png");
@@ -214,6 +215,8 @@ TEST_CASE("A complex StickerSheet is correct", "[weight=5][part=2]") {
   sheet.removeSticker(3);
   sheet.translate(0, 0, 0);
 
+
+
   REQUIRE( sheet.render() == expected );
 }
 
@@ -233,6 +236,9 @@ TEST_CASE("StickerSheet's copy constructor makes an independent copy", "[weight=
 
   StickerSheet s2(s1);
   s2.removeSticker(1);
+
+  Image result1; result1 = s1.render(); result1.writeToFile("tests/result1.png");
+  Image result2; result2 = s2.render(); result2.writeToFile("tests/result2.png");
 
   REQUIRE( s1.render() == expected2 );
   REQUIRE( s2.render() == expected );
@@ -255,5 +261,3 @@ TEST_CASE("StickerSheet's assignment operator makes an independent copy", "[weig
   REQUIRE( s1.render() == expected2 );
   REQUIRE( s2.render() == expected );
 }
-*/
-
