@@ -75,10 +75,26 @@ void BinaryTree<T>::printLeftToRight(const Node* subRoot) const
  * Flips the tree over a vertical axis, modifying the tree itself
  *  (not creating a flipped copy).
  */
-    template <typename T>
+template <typename T>
 void BinaryTree<T>::mirror()
 {
-    //your code here
+  //your code here
+  mirror(root); // recursive call on helper function
+}
+
+template <typename T>
+void BinaryTree<T>::mirror(Node* subRoot)
+{
+  //your code here
+  if (subRoot == NULL) return;
+
+  mirror(subRoot->left);
+  mirror(subRoot->right);
+  Node* temp = NULL;
+  temp = subRoot->left;
+  subRoot->left = subRoot->right;
+  subRoot->right = temp;
+
 }
 
 
@@ -138,4 +154,3 @@ int BinaryTree<T>::sumDistances() const
     // your code here
     return -1;
 }
-

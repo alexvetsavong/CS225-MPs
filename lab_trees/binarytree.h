@@ -94,7 +94,7 @@ class BinaryTree
         /**
          * @return The root of the binary tree
          */
-        Node* getRoot() const;  
+        Node* getRoot() const;
 
         /**
          * This lab deals with the following six helper functions:
@@ -193,7 +193,11 @@ class BinaryTree
         void printLeftToRight(const Node* subRoot) const;
 
 
-
+        /**
+         * Private helper function for public mirror function
+         * @param subRoot current node in the recursion
+          */
+        void mirror(Node* subRoot); //const
 
         /**
          * Private helper function for the sorted public insert function.
@@ -228,6 +232,7 @@ class BinaryTree
          * @param treeVector stores nodes in order
          */
         void inOrder(Node *subRoot, std::vector<T>& treeVector);
+
 };
 
 #include "binarytree_given.cpp"
