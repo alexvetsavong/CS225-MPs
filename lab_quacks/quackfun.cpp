@@ -31,9 +31,14 @@ T sum(stack<T>& s)
 {
 
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
+
+    if (s.empty()) return T(); // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
+    stack<T> temp = s;
+    T accumulator = temp.top();
+    temp.pop();
+    return accumulator + sum<T>(temp);
 }
 
 /**
@@ -57,7 +62,7 @@ bool isBalanced(queue<char> input)
 {
 
     // @TODO: Make less optimistic
-    return true;
+    return false;
 }
 
 /**
