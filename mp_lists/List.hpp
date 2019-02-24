@@ -18,7 +18,7 @@ List<T>::List() {
 template <typename T>
 typename List<T>::ListIterator List<T>::begin() const {
   // @TODO: graded in MP3.1
-  return List<T>::ListIterator(NULL);
+  return List<T>::ListIterator(head_);
 }
 
 /**
@@ -118,16 +118,17 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
   ListNode * curr = start;
 
-  for (int i = 0; i < splitPoint || curr != NULL; i++) {
+  for (int i = 0; i < splitPoint && curr != NULL; i++) {
     curr = curr->next;
   }
 
   if (curr != NULL) {
-      curr->prev->next = NULL;
-      curr->prev = NULL;
+    this->tail_ = curr->prev;
+    curr->prev->next = NULL;
+    curr->prev = NULL;
   }
 
-  return NULL;
+  return curr;
 }
 
 /**
