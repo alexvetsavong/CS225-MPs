@@ -38,6 +38,7 @@ typename List<T>::ListIterator List<T>::end() const {
 template <typename T>
 void List<T>::_destroy() {
   /// @todo Graded in MP3.1
+  if  (head_ == NULL || tail_ == NULL) return;
   ListNode* walk = head_;
   while (walk->next != NULL){
     walk = walk->next;
@@ -116,6 +117,8 @@ void List<T>::insertBack(const T & ndata) {
 template <typename T>
 typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
+  if (start == NULL) return NULL;
+
   ListNode * curr = start;
 
   for (int i = 0; i < splitPoint && curr != NULL; i++) {
@@ -143,6 +146,21 @@ typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
 template <typename T>
 void List<T>::waterfall() {
   /// @todo Graded in MP3.1
+  ListNode * curr = head_;
+  ListNode * movedData = NULL;
+  while(curr->next != tail_){
+    movedData = curr->next;
+    curr->next = curr->next->next;
+    curr->next->prev = curr;
+
+    tail_->next = movedData;
+    movedData->next = NULL;
+    movedData->prev = tail_;
+
+    tail_ = movedData;
+
+    curr = curr->next;
+  }
 }
 
 /**
