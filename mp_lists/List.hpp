@@ -172,6 +172,16 @@ void List<T>::reverse() {
 }
 
 /**
+ * Reverses the current List except for the beginning
+ * and end. Use dummy parameter for calling the function.
+ */
+template <typename T>
+void List<T>::reverse(int) {
+  reverse(head_->next, tail_->prev);
+}
+
+
+/**
  * Helper function to reverse a sequence of linked memory inside a List,
  * starting at startPoint and ending at endPoint. You are responsible for
  * updating startPoint and endPoint to point to the new starting and ending
@@ -185,6 +195,33 @@ void List<T>::reverse() {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
+  if (startPoint == NULL || endPoint == NULL) return;
+  ListNode* forwards = startPoint->next;
+  ListNode* backwards = endPoint->prev;
+
+  std::swap(startPoint->next,endPoint->next);
+  if (startPoint->next != NULL) startPoint->next->prev = startPoint;
+  if (endPoint->next != NULL) endPoint->next->prev = endPoint;
+
+  std::swap(startPoint->prev,endPoint->prev);
+  if (startPoint->prev != NULL) startPoint->prev->next = startPoint;
+  if (endPoint->prev != NULL) endPoint->prev->next = endPoint;
+
+  std::swap(startPoint,endPoint);
+
+  while(forwards != backwards && (forwards->prev != backwards || backwards->next != forwards)){
+
+    std::swap(forwards->next,backwards->next);
+    if (forwards->next != NULL) forwards->next->prev = forwards;
+    if (backwards->next != NULL) backwards->next->prev = backwards;
+    std::swap(forwards->prev,backwards->prev);
+    if (forwards->prev != NULL) forwards->prev->next = forwards;
+    if (backwards->prev != NULL) backwards->prev->next = backwards;
+    std::swap(forwards,backwards);
+
+    forwards = forwards->next;
+    backwards = backwards->prev;
+  }
 }
 
 /**
@@ -237,7 +274,11 @@ void List<T>::mergeWith(List<T> & otherList) {
 template <typename T>
 typename List<T>::ListNode * List<T>::merge(ListNode * first, ListNode* second) {
   /// @todo Graded in MP3.2
-  return NULL;
+  ListNode * walk1 = first;
+  ListNode * walk2 = second;
+  ListNode * temp = NULL;
+
+  return first;
 }
 
 /**
