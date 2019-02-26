@@ -177,8 +177,13 @@ void List<T>::reverse() {
  * and end. Use dummy parameter for calling the function.
  */
 template <typename T>
-void List<T>::reverse(int) {
+void List<T>::reverse(int n) {
   reverse(head_->next, tail_->prev);
+}
+
+template <typename T>
+void List<T>::reverseAsymmetric() {
+  reverse(head_->next, tail_->prev->prev);
 }
 
 
@@ -196,33 +201,60 @@ void List<T>::reverse(int) {
 template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
-  // if (startPoint == NULL || endPoint == NULL) return;
-  // ListNode* forwards = startPoint->next;
-  // ListNode* backwards = endPoint->prev;
-  //
-  // std::swap(startPoint->next,endPoint->next);
-  // if (startPoint->next != NULL) startPoint->next->prev = startPoint;
-  // if (endPoint->next != NULL) endPoint->next->prev = endPoint;
-  //
-  // std::swap(startPoint->prev,endPoint->prev);
-  // if (startPoint->prev != NULL) startPoint->prev->next = startPoint;
-  // if (endPoint->prev != NULL) endPoint->prev->next = endPoint;
-  //
-  // std::swap(startPoint,endPoint);
-  //
-  // while(forwards != backwards && (forwards->prev != backwards || backwards->next != forwards)){
-  //
-  //   std::swap(forwards->next,backwards->next);
-  //   if (forwards->next != NULL) forwards->next->prev = forwards;
-  //   if (backwards->next != NULL) backwards->next->prev = backwards;
-  //   std::swap(forwards->prev,backwards->prev);
-  //   if (forwards->prev != NULL) forwards->prev->next = forwards;
-  //   if (backwards->prev != NULL) backwards->prev->next = backwards;
-  //   std::swap(forwards,backwards);
-  //
-  //   forwards = forwards->next;
-  //   backwards = backwards->prev;
-  // }
+  if (startPoint == NULL || endPoint == NULL) return;
+  if (startPoint == endPoint) return;
+
+  ListNode * forwards = NULL;
+  ListNode * backwards = NULL;
+  ListNode* temp = NULL;
+
+  if (startPoint->next == endPoint){
+
+    temp = startPoint->prev;
+    startPoint->next = endPoint->next;
+    startPoint->prev = endPoint;
+
+    endPoint->next = startPoint;
+    endPoint->prev = temp;
+
+    std::swap(startPoint,endPoint);
+    return;
+  }
+
+
+  if (startPoint == head_ && endPoint == tail_){
+    std::swap(startPoint->next,endPoint->next);
+    if (startPoint->next != NULL) startPoint->next->prev = startPoint;
+    if (endPoint->next != NULL) endPoint->next->prev = endPoint;
+
+    std::swap(startPoint->prev,endPoint->prev);
+    if (startPoint->prev != NULL) startPoint->prev->next = startPoint;
+    if (endPoint->prev != NULL) endPoint->prev->next = endPoint;
+
+    std::swap(startPoint,endPoint);
+
+    forwards = startPoint->next;
+    backwards = endPoint->prev;
+  }
+
+  else {
+    forwards = startPoint;
+    backwards = endPoint;
+  }
+
+  while(forwards != backwards && (forwards->prev != backwards || backwards->next != forwards)){
+
+    std::swap(forwards->next,backwards->next);
+    if (forwards->next != NULL) forwards->next->prev = forwards;
+    if (backwards->next != NULL) backwards->next->prev = backwards;
+    std::swap(forwards->prev,backwards->prev);
+    if (forwards->prev != NULL) forwards->prev->next = forwards;
+    if (backwards->prev != NULL) backwards->prev->next = backwards;
+    std::swap(forwards,backwards);
+
+    forwards = forwards->next;
+    backwards = backwards->prev;
+  }
 }
 
 /**
@@ -234,7 +266,12 @@ void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
 template <typename T>
 void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.2
-  if (n > length_) reverse(head_, tail_);
+  if (n > length_){
+    reverse(head_, tail_);
+    return;
+  }
+
+
 
   return;
 }

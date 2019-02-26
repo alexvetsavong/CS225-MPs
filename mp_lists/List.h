@@ -143,7 +143,7 @@ class List {
      */
     void reverse();
     void reverse(int);
-    
+    void reverseAsymmetric();
     /**
      * Reverses blocks of size n in the current List. You should use
      * your reverse( ListNode * &, ListNode * & ) helper function in

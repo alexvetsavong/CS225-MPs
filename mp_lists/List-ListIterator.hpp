@@ -17,9 +17,9 @@ class ListIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
     // Post-Increment, iter++
     ListIterator operator++(int) {
         // @TODO: graded in MP3.1
-        ListNode* temp = position_;
-        position_ = position_->next;
-        return ListIterator(temp);
+        ListIterator temp(*this);
+        ++(*this);
+        return temp;
     }
 
     // Pre-Decrement, --iter
