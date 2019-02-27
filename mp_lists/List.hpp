@@ -183,7 +183,7 @@ void List<T>::reverse(int n) {
 
 template <typename T>
 void List<T>::reverseAsymmetric() {
-  reverse(head_, head_->next->next->next->next);
+  reverse(head_, head_->next->next);
 }
 
 
@@ -202,19 +202,26 @@ template <typename T>
 void List<T>::reverse(ListNode *& startPoint, ListNode *& endPoint) {
   /// @todo Graded in MP3.2
   /* out-of-date implementation of reverse */
-  ListNode * current = startPoint;
-  ListNode * end = endPoint;
 
   ListNode * beforeStart = startPoint->prev;
   ListNode * afterEnd = endPoint->next;
 
+  // startPoint->prev = NULL;
+  // endPoint->next = NULL;
+
+  ListNode * current = startPoint;
+  ListNode * temp = NULL;
+
   while (current != afterEnd){
-    std::swap(current->next, current->prev);
+    temp = current->next;
+    current->next = current->prev;
+    current->prev = temp;
     current = current->prev;
   }
 
-  endPoint = end;
-  std::swap(startPoint,endPoint);
+  temp = endPoint;
+  endPoint = startPoint;
+  startPoint = temp;
 
   startPoint->prev = beforeStart;
   if (beforeStart != NULL) beforeStart->next = startPoint;
@@ -239,13 +246,17 @@ void List<T>::reverseNth(int n) {
     return;
   }
 
-  if (n < length_) {
-    for (int i = 0; i < n; ++i){
-      end = end->next;
+  else {
+    while (1){
+      for (int i = 0; i < n; ++i){
+        if (end->next == NULL) break;
+        end = end->next;
+      }
+      reverse(start, end);
+      start = end->next;
+      if (start == NULL) break;
     }
-    reverse(start, end);
   }
-
   return;
 }
 
