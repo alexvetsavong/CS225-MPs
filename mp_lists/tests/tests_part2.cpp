@@ -27,6 +27,92 @@ TEST_CASE("List::reverse", "[weight=10][part=2][valgrind]") {
   REQUIRE( out == expected );
 }
 
+TEST_CASE("List::reverse simple #1", "[reverse-custom]") {
+  List<int> list;
+  list.insertBack(4);
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+
+  list.reverse();
+
+  stringstream s;
+  list.print(s);
+
+  REQUIRE( s.str() == "< 1 2 3 4 >" );
+}
+TEST_CASE("List::reverse simple #2", "[reverse-custom]") {
+  List<int> list;
+  list.insertBack(4);
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+
+  list.reverse(1);
+
+  stringstream s;
+  list.print(s);
+
+  REQUIRE( s.str() == "< 4 2 3 1 >" );
+}
+
+TEST_CASE("List::reverse simple #3", "[reverse-custom]") {
+  List<int> list;
+  list.insertBack(5);
+  list.insertBack(4);
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+
+  list.reverse(1);
+
+  stringstream s;
+  list.print(s);
+
+  REQUIRE( s.str() == "< 5 2 3 4 1 >" );
+}
+TEST_CASE("List::reverse simple #4", "[reverse-custom]") {
+  List<int> list;
+  list.insertBack(7);
+  list.insertBack(6);
+  list.insertBack(5);
+  list.insertBack(4);
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+
+
+  stringstream s1;
+  stringstream s2;
+
+  list.print(s1);
+  list.reverseAsymmetric();
+  list.print(s2);
+
+  REQUIRE( s1.str() == "< 7 6 5 4 3 2 1 >" );
+  REQUIRE( s2.str() == "< 3 4 5 6 7 2 1 >" );
+}
+
+TEST_CASE("List::reverseNth simple #1", "[weight=5][part=2][valgrind]") {
+  List<int> list;
+  list.insertBack(9);
+  list.insertBack(8);
+  list.insertBack(7);
+  list.insertBack(6);
+  list.insertBack(5);
+  list.insertBack(4);
+  list.insertBack(3);
+  list.insertBack(2);
+  list.insertBack(1);
+
+  list.reverseNth(3);
+
+  stringstream s1;
+  list.print(s1);
+
+  REQUIRE( s1.str() == "< 7 8 9 4 5 6 1 2 3 >" );
+}
+
 TEST_CASE("List::reverseNth #1", "[weight=5][part=2][valgrind]") {
   PNG in;        in.readFromFile("tests/alma.png");
   PNG expected;  expected.readFromFile("tests/expected-reverseN_1.png");
