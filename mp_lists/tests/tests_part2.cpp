@@ -93,7 +93,7 @@ TEST_CASE("List::reverse simple #4", "[reverse-custom]") {
   REQUIRE( s2.str() == "< 3 4 5 6 7 2 1 >" );
 }
 
-TEST_CASE("List::reverseNth simple #1", "[weight=5][part=2][valgrind]") {
+TEST_CASE("List::reverseNth simple #1", "[reverse-custom]") {
   List<int> list;
   list.insertBack(9);
   list.insertBack(8);
