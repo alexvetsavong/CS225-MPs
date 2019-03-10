@@ -15,6 +15,8 @@
 #include "ImageTraversal.h"
 
 using namespace cs225;
+using std::vector;
+using std::queue;
 
 /**
  * A breadth-first ImageTraversal.
@@ -26,7 +28,7 @@ public:
 
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
-  
+
   void add(const Point & point);
   Point pop();
   Point peek() const;
@@ -35,4 +37,8 @@ public:
 private:
   /** @todo [Part 1] */
   /** add private members here*/
+  queue<Point> pixelsTraversal;
+  PNG image_;
+  Point start_;
+  double tolerance_;
 };

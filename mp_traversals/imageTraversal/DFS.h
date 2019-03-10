@@ -15,7 +15,8 @@
 #include "ImageTraversal.h"
 
 using namespace cs225;
-
+using std::vector;
+using std::stack;
 /**
  * A depth-first ImageTraversal.
  * Derived from base class ImageTraversal
@@ -23,7 +24,7 @@ using namespace cs225;
 class DFS : public ImageTraversal {
 public:
   DFS(const PNG & png, const Point & start, double tolerance);
-  
+
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
 
@@ -35,4 +36,9 @@ public:
 private:
 	/** @todo [Part 1] */
 	/** add private members here*/
+  // vector<vector<bool> > visited_;
+  stack<Point> pixelsTraversal;
+  PNG image_;
+  Point start_;
+  double tolerance_;
 };

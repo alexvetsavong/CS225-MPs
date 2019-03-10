@@ -22,8 +22,13 @@ using namespace cs225;
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this BFS
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
+  image_ = png;
+  start_ = start;
+  tolerance_ = tolerance;
+
+  add(start_);
 }
 
 /**
@@ -47,6 +52,7 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
+  pixelsTraversal.push(point);
 }
 
 /**
@@ -54,7 +60,9 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point temp = pixelsTraversal.front();
+  pixelsTraversal.pop();
+  return temp;
 }
 
 /**
@@ -62,7 +70,7 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return pixelsTraversal.front();
 }
 
 /**
@@ -70,5 +78,5 @@ Point BFS::peek() const {
  */
 bool BFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  return pixelsTraversal.empty();
 }
