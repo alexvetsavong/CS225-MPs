@@ -44,7 +44,7 @@ ImageTraversal::Iterator BFS::begin() {
  */
 ImageTraversal::Iterator BFS::end() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(image_.width(),image_.height());
 }
 
 /**
@@ -70,7 +70,8 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return pixelsTraversal.front();
+  if (pixelsTraversal.empty() == false) return pixelsTraversal.front();
+  else return Point(0,0);
 }
 
 /**

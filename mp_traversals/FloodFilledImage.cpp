@@ -75,5 +75,6 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
     ++it;
   }
 
+  animation.addFrame(image_);
   return animation;
 }

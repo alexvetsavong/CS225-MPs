@@ -31,14 +31,15 @@ public:
    * A forward iterator through an ImageTraversal.
    */
 
-  vector<vector<bool> > visited_;
   PNG image_;
   double tolerance_;
   Point start_;
+  Point end_;
 
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
-    Iterator();
+    Iterator(unsigned x, unsigned y);
+    Iterator(ImageTraversal * traversal);
 
     Iterator & operator++();
     Point operator*();
@@ -46,13 +47,13 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
-    Iterator(ImageTraversal * traversal);
     double getDelta(Point one, Point two);
 
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
     ImageTraversal * traversal_;
+    vector<vector<bool> > visited_;
     Point position_;
   };
 

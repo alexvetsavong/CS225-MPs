@@ -29,11 +29,11 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
 }
 
 /**
- * Default iterator constructor.
+ * Used to determine one past the end;
  */
-ImageTraversal::Iterator::Iterator() {
+ImageTraversal::Iterator::Iterator(unsigned x, unsigned y) {
   /** @todo [Part 1] */
-
+  position_ = Point(x+1,y+1);
 }
 
 ImageTraversal::Iterator::Iterator(ImageTraversal * traversal) {
@@ -43,9 +43,8 @@ ImageTraversal::Iterator::Iterator(ImageTraversal * traversal) {
   unsigned x = traversal_->image_.width();
   unsigned y = traversal_->image_.height();
 
-  traversal_->visited_.resize(x, vector<bool>(y,false));
-
-  traversal_->visited_.at(position_.x).at(position_.y) = true; // mark the start point as visited
+  visited_.resize(x, vector<bool>(y,false));
+  visited_.at(position_.x).at(position_.y) = true;
 }
 
 /**
@@ -55,7 +54,8 @@ ImageTraversal::Iterator::Iterator(ImageTraversal * traversal) {
  */
 
 double ImageTraversal::Iterator::getDelta(Point one, Point two) {
-  return traversal_->calculateDelta(traversal_->image_.getPixel(one.x,one.y), traversal_->image_.getPixel(two.x,two.y));
+  return fabs(traversal_->calculateDelta(traversal_->image_.getPixel(one.x,one.y),
+              traversal_->image_.getPixel(two.x,two.y)));
 }
 
 
@@ -67,42 +67,83 @@ double ImageTraversal::Iterator::getDelta(Point one, Point two) {
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
   Point temp = Point(0,0);
-  traversal_->pop();
 
+  temp = traversal_->pop();
+
+  if (visited_.at(temp.x).at(temp.y) == false){
+    position_ = temp;
+    visited_.at(temp.x).at(temp.y) = true;
+  }
+
+  // std::cout << "Current Point: " << position_ << std::endl;
+
+  /***************** Section to add neighbors of current point *****************/
   if (position_.x < traversal_->image_.width() - 1){
     temp = Point(position_.x + 1, position_.y);
-    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+    if(getDelta(traversal_->start_,temp) < traversal_->tolerance_){
       traversal_->add(temp);
-      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+      // std::cout << "Added Point: " << temp << std::endl;
+    }
+    else {
+      // std::cout << "Ignored Point: " << temp << std::endl;
     }
   }
 
   if (position_.y < traversal_->image_.height() - 1){
     temp = Point(position_.x, position_.y + 1);
-    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+    if(getDelta(traversal_->start_,temp) < traversal_->tolerance_){
       traversal_->add(temp);
-      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+      // std::cout << "Added Point: " << temp << std::endl;
+    }
+    else {
+      // std::cout << "Ignored Point: " << temp << std::endl;
     }
   }
 
   if (position_.x > 0){
     temp = Point(position_.x - 1, position_.y);
-    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+    if(getDelta(traversal_->start_,temp) < traversal_->tolerance_){
       traversal_->add(temp);
-      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+      // std::cout << "Added Point: " << temp << std::endl;
+    }
+    else {
+      // std::cout << "Ignored Point: " << temp << std::endl;
     }
   }
 
   if (position_.y > 0){
     temp = Point(position_.x, position_.y - 1);
-    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+    if(getDelta(traversal_->start_,temp) < traversal_->tolerance_){
       traversal_->add(temp);
-      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+      // std::cout << "Added Point: " << temp << std::endl;
+    }
+    else {
+      // std::cout << "Ignored Point: " << temp << std::endl;
     }
   }
 
-  this->position_ = traversal_->peek();
-  traversal_->visited_.at(position_.x).at(position_.y) = true;
+  /****************************************************************************/
+
+  /********************* Move iterator to the next point **********************/
+  temp = traversal_->peek();
+
+  while (visited_.at(temp.x).at(temp.y) == true){
+    // temp = traversal_->peek();
+    traversal_->pop();
+
+    if(traversal_->empty() == true){
+      Iterator end = traversal_->end();
+      this->position_ = end.position_;
+      return *this;
+    }
+
+    temp = traversal_->peek();
+  }
+
+
+  position_ = traversal_->peek();
+
+  // std::cout << "Moved to: " << position_ << std::endl;
   return *this;
 }
 
@@ -123,5 +164,7 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  return false;
+  if (this->position_ == other.position_)
+      return false;
+  else return true;
 }
