@@ -46,7 +46,8 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
-    getTraversal(ImageTraversal * traversal)
+    Iterator(ImageTraversal * traversal);
+    double getDelta(Point one, Point two);
 
   private:
     /** @todo [Part 1] */

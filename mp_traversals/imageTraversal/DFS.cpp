@@ -12,11 +12,11 @@
 #include "ImageTraversal.h"
 #include "DFS.h"
 
+using namespace cs225;
 
 /**
  * Initializes a depth-first ImageTraversal on a given `png` image,
  * starting at `start`, and with a given `tolerance`.
- *
  * @param png The image this DFS is going to traverse
  * @param start The start point of this DFS
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
@@ -27,7 +27,6 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   image_ = png;
   start_ = start;
   tolerance_ = tolerance;
-  // visited_ = vector<bool>(png.height()*png.width(), false);
 
   add(start_);
 }
@@ -37,7 +36,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(this);
 }
 
 /**
@@ -71,7 +70,8 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return pixelsTraversal.top();
+  if (pixelsTraversal.empty() == false) return pixelsTraversal.top();
+  else return Point(0,0);
 }
 
 /**

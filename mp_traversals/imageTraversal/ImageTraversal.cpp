@@ -33,8 +33,31 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
  */
 ImageTraversal::Iterator::Iterator() {
   /** @todo [Part 1] */
-  
+
 }
+
+ImageTraversal::Iterator::Iterator(ImageTraversal * traversal) {
+  traversal_ = traversal;
+  position_ = traversal_->start_;
+
+  unsigned x = traversal_->image_.width();
+  unsigned y = traversal_->image_.height();
+
+  traversal_->visited_.resize(x, vector<bool>(y,false));
+
+  traversal_->visited_.at(position_.x).at(position_.y) = true; // mark the start point as visited
+}
+
+/**
+ * Gets the difference between two points and returns it as a double
+ * @Param one point
+ * @Param some other point
+ */
+
+double ImageTraversal::Iterator::getDelta(Point one, Point two) {
+  return traversal_->calculateDelta(traversal_->image_.getPixel(one.x,one.y), traversal_->image_.getPixel(two.x,two.y));
+}
+
 
 /**
  * Iterator increment opreator.
@@ -43,6 +66,43 @@ ImageTraversal::Iterator::Iterator() {
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
+  Point temp = Point(0,0);
+  traversal_->pop();
+
+  if (position_.x < traversal_->image_.width() - 1){
+    temp = Point(position_.x + 1, position_.y);
+    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+      traversal_->add(temp);
+      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+    }
+  }
+
+  if (position_.y < traversal_->image_.height() - 1){
+    temp = Point(position_.x, position_.y + 1);
+    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+      traversal_->add(temp);
+      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+    }
+  }
+
+  if (position_.x > 0){
+    temp = Point(position_.x - 1, position_.y);
+    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+      traversal_->add(temp);
+      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+    }
+  }
+
+  if (position_.y > 0){
+    temp = Point(position_.x, position_.y - 1);
+    if(fabs(getDelta(traversal_->start_,temp)) < traversal_->tolerance_ && traversal_->visited_.at(temp.x).at(temp.y) == false){
+      traversal_->add(temp);
+      // traversal_->visited_.at(temp.x).at(temp.y) = true;
+    }
+  }
+
+  this->position_ = traversal_->peek();
+  traversal_->visited_.at(position_.x).at(position_.y) = true;
   return *this;
 }
 
