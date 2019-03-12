@@ -17,7 +17,6 @@
 using namespace cs225;
 using std::vector;
 using std::queue;
-
 /**
  * A breadth-first ImageTraversal.
  * Derived from base class ImageTraversal
@@ -37,8 +36,9 @@ public:
 private:
   /** @todo [Part 1] */
   /** add private members here*/
+  // vector<vector<bool> > visited_;
   queue<Point> pixelsTraversal;
-  PNG image_;
-  Point start_;
-  double tolerance_;
+  // PNG image_;
+  // Point start_;
+  // double tolerance_;
 };

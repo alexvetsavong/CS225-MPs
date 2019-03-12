@@ -38,7 +38,7 @@ private:
 	/** add private members here*/
   // vector<vector<bool> > visited_;
   stack<Point> pixelsTraversal;
-  PNG image_;
-  Point start_;
-  double tolerance_;
+  // PNG image_;
+  // Point start_;
+  // double tolerance_;
 };

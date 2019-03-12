@@ -4,11 +4,15 @@
 #pragma once
 
 #include <iterator>
+#include <cmath>
+#include <vector>
+
 #include "../cs225/HSLAPixel.h"
 #include "../cs225/PNG.h"
 #include "../Point.h"
 
 using namespace cs225;
+using std::vector;
 
 /**
  * A base class for traversal algorithms on images.
@@ -26,6 +30,12 @@ public:
   /**
    * A forward iterator through an ImageTraversal.
    */
+
+  vector<vector<bool> > visited_;
+  PNG image_;
+  double tolerance_;
+  Point start_;
+
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
@@ -36,10 +46,13 @@ public:
 
     /** @todo [Part 1] */
     /** add member functions if neccesary*/
+    getTraversal(ImageTraversal * traversal)
 
   private:
     /** @todo [Part 1] */
     /** add private members here if neccesary*/
+    ImageTraversal * traversal_;
+    Point position_;
   };
 
   /**
