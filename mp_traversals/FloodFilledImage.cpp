@@ -30,8 +30,17 @@ FloodFilledImage::FloodFilledImage(const PNG & png) {
  */
 void FloodFilledImage::addFloodFill(ImageTraversal & traversal, ColorPicker & colorPicker) {
   /** @todo [Part 2] */
-  traversal_ = &traversal;
-  colorPick = &colorPicker;
+  if(traversal_.max_size() == 0){
+    traversal_.resize(1);
+    colorPick.resize(1);
+  }
+  if(traversal_.size() + 1 >= traversal_.max_size()){
+    traversal_.resize(traversal_.size() * 2);
+    colorPick.resize(traversal_.size() * 2);
+  }
+
+  traversal_.push_back(&traversal);
+  colorPick.push_back(&colorPicker);
 }
 
 /**
@@ -57,22 +66,23 @@ Animation FloodFilledImage::animate(unsigned frameInterval) const {
   Animation animation;
   /** @todo [Part 2] */
   animation.addFrame(image_);
+  for(unsigned i = 0; i < traversal_.size(); i++){
+    ImageTraversal::Iterator it = traversal_[i]->begin();
+    Point current = Point(0,0);
+    unsigned currFrame = 0;
 
-  ImageTraversal::Iterator it = traversal_->begin();
-  Point current = Point(0,0);
-  unsigned currFrame = 0;
+    while(it != traversal_[i]->end()){
+      current = *it;
 
-  while(it != traversal_->end()){
-    current = *it;
+      image_.getPixel(current.x,current.y) = colorPick[i]->getColor(current.x,current.y);
+      ++currFrame;
 
-    image_.getPixel(current.x,current.y) = colorPick->getColor(current.x,current.y);
-    ++currFrame;
+      if (currFrame % frameInterval == 0){
+        animation.addFrame(image_);
+      }
 
-    if (currFrame % frameInterval == 0){
-      animation.addFrame(image_);
+      ++it;
     }
-
-    ++it;
   }
 
   animation.addFrame(image_);

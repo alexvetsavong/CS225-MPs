@@ -20,13 +20,22 @@ int main() {
   // - The code below assumes you have an Animation called `animation`
   // - The code provided below produces the `myFloodFill.png` file you must
   //   submit Part 3 of this assignment -- uncomment it when you're ready.
-  
-  /*
+  PNG png; png.readFromFile("Crystal_Slime_SP.png");
+
+  FloodFilledImage image(png);
+  BFS bfs(png, Point(100,100), 0.05);
+  MyColorPicker myColor(png);
+  image.addFloodFill( bfs, myColor );
+
+  DFS dfs(png,Point(300,300),0.05);
+  RainbowColorPicker rainbow(0.05);
+  image.addFloodFill( dfs, rainbow );
+
+  Animation animation = image.animate(1000);
+
   PNG lastFrame = animation.getFrame( animation.frameCount() - 1 );
   lastFrame.writeToFile("myFloodFill.png");
   animation.write("myFloodFill.gif");
-  */
-
 
   return 0;
 }

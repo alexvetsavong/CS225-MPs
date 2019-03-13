@@ -28,6 +28,6 @@ private:
 	/** @todo [Part 2] */
 	/** add private members here*/
   PNG image_;
-  ImageTraversal * traversal_;
-  ColorPicker * colorPick;
+  vector<ImageTraversal *> traversal_;
+  vector<ColorPicker *> colorPick;
 };
