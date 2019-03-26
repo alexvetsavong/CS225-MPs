@@ -343,7 +343,35 @@ size_t insertion_idx(const std::vector<T>& elements, const C& val)
 {
     /* TODO Your code goes here! */
 
-    return 5;
+    if (!elements.empty()){
+
+      size_t index = elements.size() / 2;
+
+      if (elements[index] == val) return index;
+
+      if (elements[index] < val){
+        while(elements[index] < val){
+          index++;
+          if (index == elements.size()) break;
+        }
+        return index;
+      }
+
+      if (elements[index] > val){
+        while(elements[index] > val){
+          index--;
+          if (index == 0) {
+            if (elements[index] == val) return index;
+            if (elements[index] > val) return index;
+            if (elements[index] < val) return index + 1;
+          }
+        }
+        return index;
+      }
+    }
+
+    return 0;
+
 }
 
 #include "btree_given.cpp"
