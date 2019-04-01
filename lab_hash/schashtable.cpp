@@ -59,7 +59,8 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
      table[index].push_front(p);
 
      elems++;
-     if (elems/size >= 0.7) resizeTable();
+
+     if ((double)elems/size >= 0.7) resizeTable();
 
 }
 
@@ -156,7 +157,12 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
-     size_t new_size = findPrime(2*size);
+     size_t new_size = size;
+
+     while((double)elems/new_size >= 0.7){
+       new_size = findPrime(2*new_size);
+     }
+
      std::list<std::pair<K, V>>* new_table = new std::list<std::pair<K, V>>[new_size];
 
      for (size_t i = 0; i < size; i++){
