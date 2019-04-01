@@ -1,10 +1,10 @@
 /**
- * @file schashtable.cpp
+ * @file schashtable->cpp
  * Implementation of the SCHashTable class.
  */
 
 #include "schashtable.h"
- 
+
 template <class K, class V>
 SCHashTable<K, V>::SCHashTable(size_t tsize)
 {
@@ -54,6 +54,13 @@ void SCHashTable<K, V>::insert(K const& key, V const& value)
      * @todo Implement this function.
      *
      */
+     std::pair<K, V> p(key,value);
+     size_t index = hashes::hash(key, size);
+     table[index].push_front(p);
+
+     elems++;
+     if (elems/size >= 0.7) resizeTable();
+
 }
 
 template <class K, class V>
@@ -66,7 +73,16 @@ void SCHashTable<K, V>::remove(K const& key)
      * Please read the note in the lab spec about list iterators and the
      * erase() function on std::list!
      */
-    (void) key; // prevent warnings... When you implement this function, remove this line.
+     size_t index = hashes::hash(key, size);
+     for (it = table[index].begin(); it != table[index].end(); it++){
+       if (it->first == key){
+         table[index].erase(it);
+         elems--;
+         return;
+       }
+     }
+
+    // (void) key; // prevent warnings... When you implement this function, remove this line.
 }
 
 template <class K, class V>
@@ -76,6 +92,12 @@ V SCHashTable<K, V>::find(K const& key) const
     /**
      * @todo: Implement this function.
      */
+     size_t index = hashes::hash(key,size);
+     typename std::list<std::pair<K, V>>::iterator it;
+
+     for (it = table[index].begin(); it != table[index].end(); it++){
+       if (key == it->first) return (it->second);
+     }
 
     return V();
 }
@@ -134,4 +156,16 @@ void SCHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+     size_t new_size = findPrime(2*size);
+     std::list<std::pair<K, V>>* new_table = new std::list<std::pair<K, V>>[new_size];
+
+     for (size_t i = 0; i < size; i++){
+       for (it = table[i].begin(); it != table[i].end(); it++){
+         new_table[hashes::hash(it->first, new_size)].push_front(*it);
+       }
+     }
+
+     table->clear();
+     table = new_table;
+     size = new_size;
 }
