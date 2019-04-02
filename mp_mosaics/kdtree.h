@@ -259,6 +259,8 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
+
+    double findDistance(const Point<Dim>& start, const Point<Dim>& end) const;
 };
 
 #include "kdtree.hpp"
