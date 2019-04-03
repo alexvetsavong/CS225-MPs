@@ -25,35 +25,22 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
     size_t cols = theSource.getColumns();
     MosaicCanvas* newCanvas = new MosaicCanvas(rows, cols);
 
-    LUVAPixel averageColor = LUVAPixel();
-    Point<3> tileAsPoint = Point<3>();
-
-    vector<Point<3>> tileColors;
-    tileColors.resize(0);
-
-    TileImage * writeImage = NULL;
-
     std::map<Point<3>, TileImage*> pointToTile;
+    vector<Point<3>> tileColors;
+    tileColors.resize(theTiles.size());
 
     for(size_t i = 0; i < theTiles.size(); i++){
-      averageColor = theTiles[i].getAverageColor();
-      tileAsPoint = convertToXYZ(averageColor);
-      tileColors.push_back(tileAsPoint);
-      pointToTile.insert(std::pair<Point<3>, TileImage*>(tileAsPoint, &theTiles[i]));
+      tileColors[i] = convertToXYZ(theTiles[i].getAverageColor());
+      pointToTile[tileColors[i]] = &(theTiles[i]);
     }
 
     KDTree<3> tiles(tileColors);
 
     for (size_t j = 0; j < cols; j++){
       for (size_t k = 0; k < rows; k++){
-        averageColor = theSource.getRegionColor(k,j);
-        tileAsPoint = convertToXYZ(averageColor);
-        tileAsPoint = tiles.findNearestNeighbor(tileAsPoint);
-
-        writeImage = pointToTile[tileAsPoint];
-        newCanvas->setTile(k,j, writeImage);
+        Point<3> closest = tiles.findNearestNeighbor(convertToXYZ(theSource.getRegionColor(k,j)));
+        newCanvas->setTile(k,j, pointToTile[closest]);
       }
     }
-
     return newCanvas;
 }
