@@ -243,6 +243,7 @@ class KDTree
                    colored_out::enable_t enable_bold = colored_out::COUT,
                    int modWidth = -1) const;
 
+
   private:
 
     /** Internal representation, root and size **/
@@ -260,7 +261,17 @@ class KDTree
      * @todo Add your helper functions here.
      */
 
+    vector<Point<Dim>> points;
+
     double findDistance(const Point<Dim>& start, const Point<Dim>& end) const;
+    KDTreeNode* build(unsigned a, unsigned b, unsigned d);
+    unsigned partition(unsigned a, unsigned b, unsigned d, unsigned pivotIndex);
+    Point<Dim> quickselect(unsigned a, unsigned b, unsigned k, unsigned d);
+    KDTreeNode* find(unsigned d, const Point<Dim>& query, KDTreeNode* subRoot, KDTreeNode* currentBest) const;
+
+    void _destroy(KDTreeNode * subroot);
+    void _copy(const KDTree<Dim>& other);
+    KDTreeNode* _copy(KDTreeNode * subroot);
 };
 
 #include "kdtree.hpp"
