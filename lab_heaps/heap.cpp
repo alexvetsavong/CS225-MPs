@@ -15,27 +15,32 @@ template <class T, class Compare>
 size_t heap<T, Compare>::leftChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the left child.
-    return 0;
+    return (2 * currentIdx) + 1;
 }
 
 template <class T, class Compare>
 size_t heap<T, Compare>::rightChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the right child.
-    return 0;
+    return (2 * currentIdx) + 2;
 }
 
 template <class T, class Compare>
 size_t heap<T, Compare>::parent(size_t currentIdx) const
 {
     // @TODO Update to return the index of the parent.
-    return 0;
+    if (currentIdx == 0) return T();
+
+    else if (currentIdx % 2 == 0) return (currentIdx - 2) / 2;
+    else return (currentIdx - 1) / 2;
 }
 
 template <class T, class Compare>
 bool heap<T, Compare>::hasAChild(size_t currentIdx) const
 {
     // @TODO Update to return whether the given node has a child
+    if (2*currentIdx + 1 < _elems.size()) return true;
+    if (2*currentIdx + 2 < _elems.size()) return true;
     return false;
 }
 
@@ -44,13 +49,38 @@ size_t heap<T, Compare>::maxPriorityChild(size_t currentIdx) const
 {
     // @TODO Update to return the index of the child with highest priority
     ///   as defined by higherPriority()
-    return 0;
+    size_t leftChild_idx = 2*currentIdx + 1;
+    size_t rightChild_idx = 2*currentIdx + 2;
+
+    if (higherPriority(_elems[leftChild_idx], _elems[rightChild_idx]))
+      return leftChild_idx;
+    else
+      return rightChild_idx;
 }
 
 template <class T, class Compare>
 void heap<T, Compare>::heapifyDown(size_t currentIdx)
 {
     // @TODO Implement the heapifyDown algorithm.
+    if (!hasAChild(currentIdx))
+      return;
+
+    size_t leftChild_idx = 2*currentIdx + 1;
+    size_t rightChild_idx = 2*currentIdx + 2;
+
+    if (_elems[currentIdx] < _elems[leftChild_idx] &&
+        _elems[currentIdx] < _elems[rightChild_idx])
+      return;
+
+    if (higherPriority(_elems[leftChild_idx], _elems[rightChild_idx])) {
+      std::swap(_elems[currentIdx], _elems[leftChild_idx]);
+      heapifyDown(leftChild_idx);
+    }
+
+    else {
+      std::swap(_elems[currentIdx], _elems[rightChild_idx]);
+      heapifyDown(rightChild_idx);
+    }
 }
 
 template <class T, class Compare>
@@ -73,9 +103,10 @@ heap<T, Compare>::heap()
 }
 
 template <class T, class Compare>
-heap<T, Compare>::heap(const std::vector<T>& elems) 
+heap<T, Compare>::heap(const std::vector<T>& elems)
 {
     // @TODO Construct a heap using the buildHeap algorithm
+    _elems = elems;
 }
 
 template <class T, class Compare>
@@ -89,7 +120,7 @@ template <class T, class Compare>
 T heap<T, Compare>::peek() const
 {
     // @TODO Return, but do not remove, the element with highest priority
-    return T();
+    return _elems[root()];
 }
 
 template <class T, class Compare>
