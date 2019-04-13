@@ -3,7 +3,7 @@
 
 DisjointSets::DisjointSets(){
 /* initialize an empty vector */
-  // _elems.clear();
+  _elems.clear();
 }
 
 void DisjointSets::addelements(int num){

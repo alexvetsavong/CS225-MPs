@@ -17,5 +17,4 @@ public:
 
 private:
   std::vector<int> _elems;
-  std::vector<int> _size;
 };
