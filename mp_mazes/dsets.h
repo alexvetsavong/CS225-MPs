@@ -15,6 +15,6 @@ public:
   void setunion (int a, int b);
   int size (int elem);
 
-private:
   std::vector<int> _elems;
+private:
 };
