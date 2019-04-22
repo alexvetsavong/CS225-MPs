@@ -2,11 +2,11 @@ You arrive at the front gate of the castle after wandering around the perimeter 
 
 Stunned by his response, you don't know how to reply. You carefully consider what you should do.
 
-#waf-castle-sneaky-beaky
+# avetsa2-castle-sneaky-beaky
 You walk away, circling back around the perimeter of the castle, looking for another way in.
 
-#waf-castle-persist
+# avetsa2-castle-persist
 Not taking that for an answer, you ask the guard again to let you in.
 
-#waf-castle-give-up
-You decide to head to the village instead, feeling that they may be more willing to help you.
+# avetsa2-village
+You don't bother wasting any more of your time. You head to the village instead.
