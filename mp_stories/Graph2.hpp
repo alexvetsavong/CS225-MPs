@@ -23,7 +23,8 @@ std::list<std::string> Graph<V,E>::shortestPath(const std::string start, const s
   std::list<std::string> path;
 
   //queue for BFS
-  std::queue<std::string> queue;
+  std::list<std::string> queue;
+  queue.clear();
 
   //map to keep track of visited vertex
   std::unordered_map<std::string, bool> visited;
@@ -38,29 +39,41 @@ std::list<std::string> Graph<V,E>::shortestPath(const std::string start, const s
 
   while (it != vertexMap.end()) {
     visited.emplace(it->first, false);
-    distance.emplace(it->first, 0);
+    distance.emplace(it->first, -1);
     predecessor.emplace(it->first, std::string());
     it++;
   }
 
   visited[start] = true;
   distance[start] = 0;
-  queue.push(start);
+  queue.push_back(start);
 
   while (!queue.empty()) {
-    std::string current = queue.front();
-    queue.pop();
+    std::string current = queue.front(); queue.pop_front();
     std::list<std::reference_wrapper<E>> edges = incidentEdges(current);
 
     auto it = edges.begin();
     while (it != edges.end()) {
-      if (visited[it->get().dest().key()] == false) {
-        visited[it->get().dest().key()] = true;
-        distance[it->get().dest().key()] = distance[current] + 1;
-        predecessor[it->get().dest().key()] = current;
-        queue.push(it->get().dest().key());
+      if (it->get().dest().key() != current){
+        if (visited[it->get().dest().key()] == false) {
+          visited[it->get().dest().key()] = true;
+          distance[it->get().dest().key()] = distance[current] + 1;
+          predecessor[it->get().dest().key()] = current;
+          queue.push_back(it->get().dest().key());
+        }
+        if (it->get().dest().key() == end) break;
       }
-      if (it->get().dest().key() == end) break;
+
+      else {
+        if (visited[it->get().source().key()] == false) {
+          visited[it->get().source().key()] = true;
+          distance[it->get().source().key()] = distance[current] + 1;
+          predecessor[it->get().source().key()] = current;
+          queue.push_back(it->get().source().key());
+        }
+        if (it->get().source().key() == end) break;
+      }
+
       it++;
     }
   }
@@ -72,11 +85,6 @@ std::list<std::string> Graph<V,E>::shortestPath(const std::string start, const s
     path.push_front(predecessor[crawl]);
     crawl = predecessor[crawl];
   }
-
-  // printing path from source to destination
-  std::cout << "\nPath is::\n";
-  for (auto it = path.begin(); it != path.end(); it++)
-    std::cout << *it << " ";
 
   return path;
 }
